@@ -1,4 +1,4 @@
-# BudgetPy
+# BudgetPy    [  WIP  ]
 
 An expenses tracker with multiple features.
 - Stores data when program is closed
