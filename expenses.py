@@ -1,7 +1,5 @@
-from ast import Try
-from types import ModuleType
 import pandas as pd; import os; import time; import csv
-
+expenses = []; theBudget = []; theIncome = [] 
 
 # Display the money left over from budget, or over budget.
 # Reminder to set income & budget on start of program
@@ -46,10 +44,20 @@ def menu():
 def addExpense():
     lst = []
     name = str(input("  What would you like to name the expense?:  "))  
+    currency = str(input("  What currency would you like to use? GBP, USD OR EUR:  "))
+    if currency == "GBP":
+        endCurrency = "£"
+    elif currency == "USD":
+        endCurrency = "$"
+    elif currency == "EUR":
+        endCurrency = "€"
+    else:
+        print("  Please enter a valid currency.")
+        addExpense()
     choice = str(input("""  Is this a "subscription or "payment"?:  """))
     if choice == "subscription":
         length = str(input("""  Is the subscription "weekly", "monthly" or "yearly"?:  """))
-        if length == "weekly":
+    if length == "weekly":
             cost = int(input("  How much is the payment?:  "))
             cost=cost*4.42857143
         elif length == "monthly":
@@ -78,17 +86,21 @@ def totalExpense():
     os.system("cls")
     cost_file_path = 'expenses.csv'
     budget_file_path = 'budget.csv'
+    income_file_path = 'income.csv'
     dataframe = pd.read_csv(cost_file_path)
     dataframe2 = pd.read_csv(budget_file_path)
+    dataframe3 = pd.read_csv(income_file_path)
     print()
     print(dataframe)
     total = dataframe['cost'].sum()
     endbudget = dataframe2['budget'].head(1).sum()
+    income = dataframe3['income'].head(1).sum()
     print()
-    print(f"""  Total spent: £{total}
-  
-  Budget: £{endbudget}
-  Money left: £{endbudget - total}
+    print(f"""  Total spent: {endCurrency}{total}
+
+  Income: {endCurrency}{income}
+  Budget: {endCurrency}{endbudget}
+  Money left: {endCurrency}{endbudget - total}
   """)
     choice = input("  Press enter to return to the menu.")
     if choice == "":
@@ -119,6 +131,28 @@ def setBudget():
     if choice == "":
         menu()
 
-
+def setIncome():
+    os.system("cls")
+    print()
+    try:
+        income_ = int(input("  What is your new income?:  "))
+        if income_ < 0:
+            print("  Please enter a valid income.")
+            setIncome()
+    except ValueError:
+        print("  Please enter a valid income.")
+        setIncome()
+        theIncome.extend(["income", income_])
+        file_path = 'income.csv'
+        dataframe3 = pd.DataFrame(theBudget, columns=['income'])
+        with open(file_path, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            for row in dataframe3.itertuples(index=False):
+                writer.writerow(row)
+        print(f"  Successfully set budget to £{income_}")
+        print()
+        choice = input("  Press enter to return to the menu.")
+        if choice == "":
+            menu()
 menu()
 
