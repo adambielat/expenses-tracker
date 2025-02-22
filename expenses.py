@@ -20,12 +20,14 @@ def menu():
    | $$  \ $$| $$  | $$| $$  | $$| $$  \ $$| $$         | $$   | $$          | $$    
    | $$$$$$$/|  $$$$$$/| $$$$$$$/|  $$$$$$/| $$$$$$$$   | $$   | $$          | $$    
    |_______/  \______/ |_______/  \______/ |________/   |__/   |__/          |__/    
-                                                                                  
+
    1 - View total expenditure
    2 - Add an expense / purchase
    3 - Set a new budget
    4 - Set your income
-                                                                                  """)
+   
+   P.S    Reminder to set income & budget on start of program.""")
+    
     choice = int(input("  Enter a choice: "))
     if choice not in range(1,5):
         print("  Please enter a valid choice.")
@@ -155,4 +157,3 @@ def setIncome():
         if choice == "":
             menu()
 menu()
-
